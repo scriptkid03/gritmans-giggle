@@ -1,69 +1,188 @@
-import Image from "next/image";
+import React from 'react';
+import Link from 'next/link';
+import { Hero } from '@/components/Hero';
+import { FeaturedJoke } from '@/components/FeaturedJoke';
+import { CategoryCard } from '@/components/CategoryCard';
+import { GalleryCard } from '@/components/GalleryCard';
+import { CommentCard } from '@/components/CommentCard';
+import { SectionHeading } from '@/components/SectionHeading';
+import { Button } from '@/components/Button';
+import { Badge } from '@/components/Badge';
+import {
+  LAUGH_CATEGORIES,
+  MOCK_JOKES,
+  MOCK_GALLERY_ITEMS,
+  MOCK_COMMENTS,
+} from '@/lib/mock-data';
+import { ArrowRight, MessageSquarePlus, Sparkles } from 'lucide-react';
 
-export default function Home() {
+export default function HomePage() {
+  const previewGallery = MOCK_GALLERY_ITEMS.slice(0, 3);
+  const previewComments = MOCK_COMMENTS.slice(0, 3);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <div className="flex flex-col w-full">
+      {/* 1. HERO SECTION */}
+      <Hero />
+
+      {/* 2. FEATURED JOKE: TODAY'S DOSE OF LAUGHTER */}
+      <section
+        id="todays-dose"
+        className="w-full py-14 sm:py-20 bg-amber-50/50 border-y-3 border-black relative overflow-hidden"
+      >
+        <div className="absolute inset-0 opacity-15 comic-dots-subtle pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <SectionHeading
+            badge="DAILY PRESCRIPTION"
+            badgeVariant="yellow"
+            title="TODAY'S DOSE OF LAUGHTER"
+            subtitle="Hand-picked certified rib-crackers guaranteed to brighten your day. Hit 'Another One' if you need extra treatment!"
+            centered={true}
+          />
+
+          <FeaturedJoke initialJoke={MOCK_JOKES[0]} />
+        </div>
+      </section>
+
+      {/* 3. LAUGH CATEGORIES: WHAT ARE YOU IN THE MOOD FOR? */}
+      <section className="w-full py-16 sm:py-24 bg-[#FFFDF7] relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionHeading
+            badge="PICK YOUR POISON"
+            badgeVariant="pink"
+            title="WHAT ARE YOU IN THE MOOD FOR?"
+            subtitle="From punchy one-liners to chaotic street tales, pick a lane and prepare to lose your composure."
+            centered={true}
+          />
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-7">
+            {LAUGH_CATEGORIES.map((cat, idx) => (
+              <CategoryCard key={cat.id} category={cat} index={idx} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 4. LAUGH GALLERY PREVIEW */}
+      <section className="w-full py-16 sm:py-24 bg-neutral-100/70 border-y-3 border-black relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+            <div>
+              <Badge variant="orange" size="sm" rotate="-2" className="mb-2">
+                VISUAL COMEDY &amp; MEMES
+              </Badge>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-[#121316] uppercase">
+                THE LAUGH VAULT
+              </h2>
+              <p className="mt-2 text-base text-neutral-600 font-medium max-w-xl">
+                A peek into our collection of viral memes, relatable skits, and
+                illustrated scenes from everyday African and global hustle.
+              </p>
+            </div>
+
+            <div>
+              <Button
+                variant="yellow"
+                size="md"
+                href="/gallery"
+                className="gap-2"
+              >
+                <span>SEE THE WHOLE GALLERY</span>
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+            </div>
+          </div>
+
+          {/* Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {previewGallery.map((item) => (
+              <GalleryCard key={item.id} item={item} />
+            ))}
+          </div>
+
+          <div className="mt-12 text-center">
+            <Link
+              href="/gallery"
+              className="inline-flex items-center gap-2 text-base font-black uppercase text-[#121316] hover:text-[#FF6B00] transition-colors border-b-2 border-black pb-0.5"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              <span>SEE THE WHOLE GALLERY →</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. VISITOR COMMENTS PREVIEW: WHAT ARE PEOPLE SAYING? */}
+      <section className="w-full py-16 sm:py-24 bg-[#FFFDF7] relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionHeading
+            badge="THE CHUCKLE COMMUNITY"
+            badgeVariant="purple"
+            title="WHAT ARE PEOPLE SAYING?"
+            subtitle="Real reactions from verified gigglers around the globe whose ribs were broken in the line of laughter."
+            centered={true}
+          />
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-12">
+            {previewComments.map((comment) => (
+              <CommentCard key={comment.id} comment={comment} />
+            ))}
+          </div>
+
+          {/* Call to action for comments */}
+          <div className="text-center">
+            <Button
+              variant="pink"
+              size="lg"
+              href="/comments"
+              className="gap-2 shadow-[4px_4px_0px_#121316]"
             >
-              Learning
-            </a>{" "}
-            center.
+              <MessageSquarePlus className="w-5 h-5 text-white" />
+              <span>LEAVE YOUR LAUGH</span>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. FINAL CTA: GOT A JOKE? */}
+      <section className="w-full py-16 sm:py-20 bg-[#FFDE00] border-t-4 border-black relative overflow-hidden">
+        {/* Comic background circles */}
+        <div className="absolute -top-12 -left-12 w-48 h-48 rounded-full bg-white/40 border-3 border-black pointer-events-none" />
+        <div className="absolute -bottom-16 -right-16 w-60 h-60 rounded-full bg-[#FF6B00]/20 border-3 border-black pointer-events-none" />
+
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center relative z-10 space-y-6">
+          <div className="inline-block">
+            <Badge variant="black" size="md" rotate="-2">
+              CALLING ALL COMEDIANS &amp; UNCLE TALENTS 🎤
+            </Badge>
+          </div>
+
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-black uppercase text-[#121316] tracking-tight leading-tight">
+            GOT A JOKE?
+          </h2>
+
+          <p className="text-lg sm:text-2xl font-black text-[#121316] max-w-xl mx-auto leading-relaxed">
+            Don&apos;t keep the laughter to yourself. Share it with the Joint.
           </p>
+
+          <p className="text-sm sm:text-base text-neutral-800 font-medium max-w-md mx-auto">
+            Got that one joke that always cracks up the family dining table? Drop it
+            right here and let the world giggle with you.
+          </p>
+
+          <div className="pt-2">
+            <Button
+              variant="charcoal"
+              size="lg"
+              href="/comments"
+              className="text-base px-8 py-4 gap-2.5 shadow-[5px_5px_0px_#FF2E93]"
+            >
+              <Sparkles className="w-5 h-5 text-[#FFDE00]" />
+              <span>DROP YOUR JOKE</span>
+            </Button>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </section>
     </div>
   );
 }
