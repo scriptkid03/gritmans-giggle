@@ -50,11 +50,11 @@ export const JokeCard: React.FC<JokeCardProps> = ({
 
   return (
     <article
-      className={`relative bg-white rounded-2xl border-3 border-[#121316] comic-shadow-sm comic-card-hover p-5 sm:p-6 flex flex-col justify-between transition-all ${className}`}
+      className={`relative bg-white rounded-2xl border-3 border-[#121316] comic-shadow-sm comic-card-hover p-4 min-[380px]:p-5 sm:p-6 flex flex-col justify-between transition-all ${className}`}
     >
       <div>
         {/* Top bar: Category & Actions */}
-        <div className="flex items-center justify-between gap-2 mb-4">
+        <div className="flex items-center justify-between gap-2 mb-3.5 sm:mb-4">
           <Badge
             variant={getCategoryBadgeVariant(joke.category)}
             size="sm"
@@ -66,7 +66,7 @@ export const JokeCard: React.FC<JokeCardProps> = ({
           <button
             type="button"
             onClick={handleCopy}
-            className="p-1.5 rounded-lg border-2 border-black bg-neutral-100 hover:bg-[#FFDE00] transition-colors comic-btn-press"
+            className="p-2 min-w-[36px] min-h-[36px] flex items-center justify-center rounded-lg border-2 border-black bg-neutral-100 hover:bg-[#FFDE00] transition-colors comic-btn-press cursor-pointer shrink-0"
             title="Copy this joke"
             aria-label="Copy joke"
           >
@@ -81,7 +81,7 @@ export const JokeCard: React.FC<JokeCardProps> = ({
         </div>
 
         {/* Joke Setup */}
-        <p className="text-base sm:text-lg font-bold text-[#121316] leading-snug mb-4">
+        <p className="text-base sm:text-lg font-bold text-[#121316] leading-snug mb-4 break-words">
           {joke.setup}
         </p>
 
@@ -93,7 +93,7 @@ export const JokeCard: React.FC<JokeCardProps> = ({
                 <Sparkles className="w-3.5 h-3.5 text-[#FF6B00]" />
                 The Punchline:
               </div>
-              <p className="text-base sm:text-lg font-black text-[#121316] leading-relaxed">
+              <p className="text-base sm:text-lg font-black text-[#121316] leading-relaxed break-words">
                 {joke.punchline}
               </p>
             </div>
@@ -101,7 +101,7 @@ export const JokeCard: React.FC<JokeCardProps> = ({
             <button
               type="button"
               onClick={() => setIsRevealed(true)}
-              className="w-full py-3 px-4 rounded-xl border-2 border-black bg-[#FFE53B]/20 hover:bg-[#FFE53B]/40 text-black font-extrabold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer group"
+              className="w-full py-3 px-4 min-h-[44px] rounded-xl border-2 border-black bg-[#FFE53B]/20 hover:bg-[#FFE53B]/40 text-black font-extrabold text-xs min-[380px]:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer group"
             >
               <Eye className="w-4 h-4 text-[#FF6B00] group-hover:scale-110 transition-transform" />
               <span>Tap to Crack Up 👀</span>
@@ -113,7 +113,7 @@ export const JokeCard: React.FC<JokeCardProps> = ({
               <button
                 type="button"
                 onClick={() => setIsRevealed(false)}
-                className="text-[11px] font-bold text-neutral-500 hover:text-black inline-flex items-center gap-1 cursor-pointer"
+                className="text-xs font-bold text-neutral-500 hover:text-black inline-flex items-center gap-1 py-1 cursor-pointer"
               >
                 <EyeOff className="w-3 h-3" /> Hide Punchline
               </button>

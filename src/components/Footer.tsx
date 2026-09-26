@@ -24,48 +24,48 @@ export const Footer: React.FC = () => {
   return (
     <footer className="w-full bg-[#121316] text-white border-t-4 border-black relative overflow-hidden">
       {/* Decorative comic dots top border */}
-      <div className="h-3 w-full bg-[#FFDE00] border-b-2 border-black" />
+      <div className="h-2.5 sm:h-3 w-full bg-[#FFDE00] border-b-2 border-black" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-10">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 pb-12 border-b-2 border-neutral-800">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 pb-8 sm:pb-10">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 pb-8 sm:pb-12 border-b-2 border-neutral-800">
           {/* Brand info */}
-          <div className="md:col-span-5 space-y-4">
+          <div className="md:col-span-5 space-y-3.5 sm:space-y-4">
             <div className="flex items-center gap-2.5">
-              <div className="w-10 h-10 rounded-xl bg-[#FFDE00] text-black border-2 border-black flex items-center justify-center font-black">
-                <Laugh className="w-6 h-6 stroke-[2.5]" />
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#FFDE00] text-black border-2 border-black flex items-center justify-center font-black shrink-0">
+                <Laugh className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.5]" />
               </div>
-              <span className="text-xl sm:text-2xl font-black uppercase tracking-tight text-white">
-                GRITMANS GIGGLE & CHUCKLE JOINT
+              <span className="text-lg min-[360px]:text-xl sm:text-2xl font-black uppercase tracking-tight text-white leading-tight break-words">
+                GRITMANS GIGGLE &amp; CHUCKLE JOINT
               </span>
             </div>
 
-            <p className="text-base font-bold text-[#FFDE00] leading-snug">
+            <p className="text-sm sm:text-base font-bold text-[#FFDE00] leading-snug">
               Where your ribs break and your worries fade.
             </p>
 
-            <p className="text-sm text-neutral-400 font-medium leading-relaxed max-w-sm">
+            <p className="text-xs sm:text-sm text-neutral-400 font-medium leading-relaxed max-w-sm">
               Your certified sanctuary for Ghanaian wit, unadulterated African humor,
               and universal comedy that leaves tears in your eyes and joy in your soul.
             </p>
 
             <div className="pt-1">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border border-neutral-700 bg-neutral-900 text-xs font-mono text-[#FFDE00]">
+              <span className="inline-flex items-center gap-1.5 px-2.5 min-[380px]:px-3 py-1 rounded-lg border border-neutral-700 bg-neutral-900 text-[11px] min-[380px]:text-xs font-mono text-[#FFDE00] max-w-full break-all">
                 🌐 funnygritmanlaughters.com
               </span>
             </div>
           </div>
 
           {/* Quick navigation */}
-          <div className="md:col-span-3 space-y-3">
-            <h4 className="text-sm font-black uppercase tracking-wider text-[#FF2E93]">
+          <div className="md:col-span-3 space-y-2.5 sm:space-y-3">
+            <h4 className="text-xs sm:text-sm font-black uppercase tracking-wider text-[#FF2E93]">
               Navigation
             </h4>
-            <ul className="space-y-2">
+            <ul className="grid grid-cols-2 md:grid-cols-1 gap-2">
               {quickLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm font-bold text-neutral-300 hover:text-[#FFDE00] transition-colors inline-block"
+                    className="text-xs sm:text-sm font-bold text-neutral-300 hover:text-[#FFDE00] transition-colors inline-block py-1"
                   >
                     {link.label}
                   </Link>
@@ -75,8 +75,8 @@ export const Footer: React.FC = () => {
           </div>
 
           {/* Socials & Laugh Guarantee */}
-          <div className="md:col-span-4 space-y-4">
-            <h4 className="text-sm font-black uppercase tracking-wider text-[#FF6B00]">
+          <div className="md:col-span-4 space-y-3.5 sm:space-y-4">
+            <h4 className="text-xs sm:text-sm font-black uppercase tracking-wider text-[#FF6B00]">
               Catch The Banter
             </h4>
             <p className="text-xs text-neutral-400 font-medium">
@@ -89,7 +89,7 @@ export const Footer: React.FC = () => {
                 <a
                   key={soc.name}
                   href={soc.href}
-                  className="px-3 py-1.5 rounded-lg border border-neutral-700 bg-neutral-900 hover:bg-[#FFDE00] hover:text-black hover:border-black font-extrabold text-xs transition-colors flex items-center gap-1.5 cursor-pointer"
+                  className="px-3 py-2 min-h-[38px] rounded-lg border border-neutral-700 bg-neutral-900 hover:bg-[#FFDE00] hover:text-black hover:border-black font-extrabold text-xs transition-colors flex items-center gap-1.5 cursor-pointer"
                   title={soc.name}
                 >
                   <span>{soc.icon}</span>
@@ -99,19 +99,19 @@ export const Footer: React.FC = () => {
             </div>
 
             {/* Comic disclaimer card */}
-            <div className="p-3 rounded-xl border border-neutral-700 bg-neutral-900/80 text-[11px] text-neutral-400 font-medium leading-relaxed">
+            <div className="p-3 rounded-xl border border-neutral-700 bg-neutral-900/80 text-[10px] min-[380px]:text-[11px] text-neutral-400 font-medium leading-relaxed">
               ⚠️ <strong className="text-neutral-200">Health Warning:</strong> Side effects of visiting this joint include sudden snorting in public, uncontrollable cheek cramps, and an elevated zest for life.
             </div>
           </div>
         </div>
 
         {/* Bottom copyright */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-bold text-neutral-400">
+        <div className="pt-6 sm:pt-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left text-[11px] sm:text-xs font-bold text-neutral-400">
           <div>
             © {currentYear} Gritmans Giggle and Chuckle Joint. All rights reserved.
           </div>
           <div className="flex items-center gap-1">
-            <span>Made with pure joy &</span>
+            <span>Made with pure joy &amp;</span>
             <span className="text-[#FF2E93] font-black">100% Giggles</span>
           </div>
         </div>

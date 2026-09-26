@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from './Button';
@@ -21,30 +21,44 @@ export const Navbar: React.FC = () => {
     { label: 'About', href: '/about' },
   ];
 
+  // Prevent background scrolling when mobile drawer is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileMenuOpen]);
+
   return (
     <>
       <header className="sticky top-0 z-40 w-full bg-[#FFFDF7]/95 backdrop-blur-xs border-b-3 border-black">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
+        <div className="max-w-7xl mx-auto px-3 min-[380px]:px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16 sm:h-20">
             {/* Left: Brand Logo */}
             <Link
               href="/"
-              className="flex items-center gap-2.5 group cursor-pointer select-none"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center gap-2 sm:gap-2.5 group cursor-pointer select-none min-w-0"
+              aria-label="Gritmans Giggle Joint Home"
             >
-              <div className="w-11 h-11 rounded-xl border-2 border-black bg-[#FFDE00] flex items-center justify-center comic-shadow-sm group-hover:rotate-6 group-hover:scale-105 transition-transform">
-                <Laugh className="w-6 h-6 text-[#121316] stroke-[2.5]" />
+              <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl border-2 border-black bg-[#FFDE00] flex items-center justify-center shrink-0 comic-shadow-sm group-hover:rotate-6 transition-transform">
+                <Laugh className="w-5 h-5 sm:w-6 sm:h-6 text-[#121316] stroke-[2.5]" />
               </div>
-              <div className="flex flex-col">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-xl sm:text-2xl font-black tracking-tight text-[#121316] uppercase font-display leading-none">
+              <div className="flex flex-col min-w-0">
+                <div className="flex items-center gap-1 sm:gap-1.5">
+                  <span className="text-lg min-[360px]:text-xl sm:text-2xl font-black tracking-tight text-[#121316] uppercase font-display leading-none truncate">
                     GRITMANS
                   </span>
                   <Badge variant="pink" size="sm" rotate="-2" className="hidden sm:inline-flex">
                     JOINT
                   </Badge>
                 </div>
-                <span className="text-[10px] font-black tracking-widest text-[#FF6B00] uppercase mt-0.5">
-                  Giggle & Chuckle
+                <span className="text-[9px] min-[360px]:text-[10px] font-black tracking-widest text-[#FF6B00] uppercase mt-0.5 truncate">
+                  Giggle &amp; Chuckle
                 </span>
               </div>
             </Link>
@@ -69,7 +83,7 @@ export const Navbar: React.FC = () => {
               })}
             </nav>
 
-            {/* Right: Prominent "MAKE ME LAUGH" button */}
+            {/* Right: Desktop "MAKE ME LAUGH" button */}
             <div className="hidden md:flex items-center">
               <Button
                 variant="yellow"
@@ -82,21 +96,25 @@ export const Navbar: React.FC = () => {
               </Button>
             </div>
 
-            {/* Mobile Hamburger Button */}
-            <div className="flex md:hidden items-center gap-2">
+            {/* Mobile Controls */}
+            <div className="flex md:hidden items-center gap-1.5 sm:gap-2">
+              {/* Compact Quick Laugh button for screens >= 380px */}
               <button
                 type="button"
                 onClick={() => setIsJokeModalOpen(true)}
-                className="px-3 py-1.5 text-xs font-black uppercase rounded-lg border-2 border-black bg-[#FFDE00] shadow-[2px_2px_0px_#000] active:translate-x-0.5 active:translate-y-0.5"
+                className="hidden min-[380px]:inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-black uppercase rounded-lg border-2 border-black bg-[#FFDE00] shadow-[2px_2px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 cursor-pointer"
+                aria-label="Get a quick joke"
               >
-                😂 LAUGH
+                <span>😂</span>
+                <span>LAUGH</span>
               </button>
 
+              {/* Hamburger Button with comfortable 44px min touch target */}
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-2.5 rounded-xl border-2 border-black bg-white hover:bg-neutral-100 comic-shadow-sm comic-btn-press"
-                aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+                className="w-11 h-11 rounded-xl border-2 border-black bg-white hover:bg-neutral-100 flex items-center justify-center comic-shadow-sm comic-btn-press cursor-pointer shrink-0"
+                aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
                 aria-expanded={mobileMenuOpen}
               >
                 {mobileMenuOpen ? (
@@ -109,9 +127,9 @@ export const Navbar: React.FC = () => {
           </div>
         </div>
 
-        {/* Mobile Dropdown Menu */}
+        {/* Mobile Dropdown Menu with viewport constraint and smooth scroll */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t-3 border-black bg-[#FFFDF7] px-4 pt-4 pb-6 space-y-3 animate-comic-pop">
+          <div className="md:hidden border-t-3 border-black bg-[#FFFDF7] px-4 pt-4 pb-6 space-y-4 animate-comic-pop max-h-[calc(100dvh-4.25rem)] overflow-y-auto">
             <nav className="flex flex-col space-y-2">
               {navLinks.map((link) => {
                 const isActive = pathname === link.href;
@@ -120,10 +138,10 @@ export const Navbar: React.FC = () => {
                     key={link.href}
                     href={link.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`px-4 py-3 rounded-xl text-base font-black uppercase tracking-wider transition-colors border-2 ${
+                    className={`min-h-[48px] px-4 py-3 rounded-xl text-base font-black uppercase tracking-wider flex items-center transition-colors border-2 ${
                       isActive
                         ? 'bg-[#FFDE00] text-black border-black shadow-[3px_3px_0px_#121316]'
-                        : 'bg-white border-neutral-300 text-neutral-800'
+                        : 'bg-white border-neutral-300 text-neutral-800 hover:bg-neutral-50'
                     }`}
                   >
                     {link.label}
@@ -140,7 +158,7 @@ export const Navbar: React.FC = () => {
                   setMobileMenuOpen(false);
                   setIsJokeModalOpen(true);
                 }}
-                className="w-full justify-center"
+                className="w-full justify-center min-h-[48px] text-base"
               >
                 <Sparkles className="w-5 h-5 text-[#FF6B00]" />
                 <span>MAKE ME LAUGH</span>

@@ -73,34 +73,34 @@ export const JokesClient: React.FC = () => {
   };
 
   return (
-    <div className="w-full py-12 sm:py-16 bg-[#FFFDF7] min-h-screen">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="w-full py-8 sm:py-16 bg-[#FFFDF7] min-h-screen">
+      <div className="max-w-7xl mx-auto px-3 min-[380px]:px-4 sm:px-6 lg:px-8">
         {/* Page Header */}
-        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
-          <Badge variant="yellow" size="md" rotate="-2" className="mb-3">
+        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-14">
+          <Badge variant="yellow" size="md" rotate="-2" className="mb-2.5 sm:mb-3">
             THE VAULT OF COMEDY 📜
           </Badge>
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black uppercase text-[#121316] tracking-tight leading-tight">
+          <h1 className="text-3xl min-[360px]:text-4xl min-[480px]:text-5xl sm:text-6xl font-black uppercase text-[#121316] tracking-tight leading-tight break-words">
             THE JOKE JOINT
           </h1>
-          <p className="mt-4 text-base sm:text-lg font-medium text-neutral-700 leading-relaxed">
+          <p className="mt-3 sm:mt-4 text-sm sm:text-base lg:text-lg font-medium text-neutral-700 leading-relaxed">
             Fresh jokes, terrible jokes, dad jokes, random jokes — if it makes
             somebody laugh, it belongs here.
           </p>
         </div>
 
         {/* Search & Actions Toolbar */}
-        <div className="bg-white rounded-3xl border-3 border-black comic-shadow-lg p-5 sm:p-7 mb-10 space-y-6">
-          <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+        <div className="bg-white rounded-2xl sm:rounded-3xl border-3 border-black shadow-[4px_4px_0px_#121316] sm:comic-shadow-lg p-4 min-[380px]:p-5 sm:p-7 mb-8 sm:mb-10 space-y-5 sm:space-y-6">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4">
             {/* Search Input */}
             <div className="relative flex-1">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-400" />
+              <Search className="absolute left-3.5 sm:left-4 top-1/2 -translate-y-1/2 w-4 sm:w-5 h-4 sm:h-5 text-neutral-400" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search jokes by keyword, trotro, jollof, work..."
-                className="w-full pl-12 pr-10 py-3.5 rounded-2xl border-2 border-black font-semibold text-sm bg-neutral-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black transition-all"
+                placeholder="Search jokes by keyword, trotro, jollof..."
+                className="w-full pl-10 sm:pl-12 pr-9 sm:pr-10 py-3 sm:py-3.5 min-h-[46px] rounded-xl sm:rounded-2xl border-2 border-black font-semibold text-base sm:text-sm bg-neutral-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black transition-all"
               />
               {searchQuery && (
                 <button
@@ -119,21 +119,21 @@ export const JokesClient: React.FC = () => {
               variant="orange"
               size="md"
               onClick={handleRandomJoke}
-              className="gap-2 shrink-0 justify-center"
+              className="gap-2 shrink-0 justify-center w-full sm:w-auto min-h-[46px]"
             >
               <Shuffle className="w-4 h-4" />
               <span>Surprise Me 🎲</span>
             </Button>
           </div>
 
-          {/* Category Filter Pills */}
+          {/* Category Filter Container - Smooth Horizontal Scroll on Mobile, Wrapped on Tablet/Desktop */}
           <div>
-            <div className="flex items-center gap-2 mb-3 text-xs font-black uppercase tracking-wider text-neutral-500">
+            <div className="flex items-center gap-1.5 mb-2.5 text-xs font-black uppercase tracking-wider text-neutral-500">
               <Filter className="w-3.5 h-3.5" />
               <span>Filter by Category:</span>
             </div>
 
-            <div className="flex flex-wrap gap-2">
+            <div className="flex items-center gap-1.5 min-[380px]:gap-2 overflow-x-auto pb-2 scrollbar-none sm:flex-wrap -mx-1 px-1">
               {CATEGORIES.map((cat) => {
                 const isSelected = selectedCategory === cat;
                 return (
@@ -141,9 +141,9 @@ export const JokesClient: React.FC = () => {
                     key={cat}
                     type="button"
                     onClick={() => setSelectedCategory(cat)}
-                    className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider border-2 border-black transition-all cursor-pointer ${
+                    className={`px-3 min-[380px]:px-4 py-2 min-h-[38px] rounded-xl text-xs font-black uppercase tracking-wider border-2 border-black transition-all cursor-pointer shrink-0 select-none ${
                       isSelected
-                        ? 'bg-[#FFDE00] text-black shadow-[3px_3px_0px_#121316] -translate-y-0.5'
+                        ? 'bg-[#FFDE00] text-black shadow-[2px_2px_0px_#121316] sm:shadow-[3px_3px_0px_#121316] -translate-y-0.5'
                         : 'bg-neutral-100 hover:bg-neutral-200 text-neutral-700 shadow-[1px_1px_0px_#121316]'
                     }`}
                   >
@@ -155,7 +155,7 @@ export const JokesClient: React.FC = () => {
           </div>
 
           {/* Results count & active tags */}
-          <div className="flex items-center justify-between text-xs font-extrabold text-neutral-500 pt-2 border-t border-neutral-100">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs font-extrabold text-neutral-500 pt-2 border-t border-neutral-100">
             <span>
               Showing <strong className="text-black">{filteredJokes.length}</strong> jokes
               {selectedCategory !== 'All' ? ` in "${selectedCategory}"` : ''}
@@ -169,7 +169,7 @@ export const JokesClient: React.FC = () => {
                   setSelectedCategory('All');
                   setSearchQuery('');
                 }}
-                className="text-[#FF2E93] hover:underline cursor-pointer"
+                className="text-[#FF2E93] hover:underline cursor-pointer text-left sm:text-right"
               >
                 Reset Filters ✕
               </button>
@@ -179,14 +179,14 @@ export const JokesClient: React.FC = () => {
 
         {/* Jokes Grid */}
         {filteredJokes.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8">
             {filteredJokes.map((joke) => (
               <div
                 key={joke.id}
                 id={`joke-${joke.id}`}
                 className={`transition-all duration-300 rounded-2xl ${
                   highlightedJokeId === joke.id
-                    ? 'ring-4 ring-[#FF6B00] scale-[1.02] shadow-[8px_8px_0px_#121316]'
+                    ? 'ring-3 sm:ring-4 ring-[#FF6B00] scale-[1.01] sm:scale-[1.02] shadow-[6px_6px_0px_#121316]'
                     : ''
                 }`}
               >
@@ -195,12 +195,12 @@ export const JokesClient: React.FC = () => {
             ))}
           </div>
         ) : (
-          <div className="bg-white rounded-3xl border-3 border-black comic-shadow p-12 text-center max-w-lg mx-auto my-12">
-            <div className="text-5xl mb-4">🫠</div>
-            <h3 className="text-2xl font-black uppercase text-[#121316] mb-2">
+          <div className="bg-white rounded-2xl sm:rounded-3xl border-3 border-black comic-shadow p-6 sm:p-12 text-center max-w-lg mx-auto my-8 sm:my-12">
+            <div className="text-4xl sm:text-5xl mb-3 sm:mb-4">🫠</div>
+            <h3 className="text-xl sm:text-2xl font-black uppercase text-[#121316] mb-2 break-words">
               No jokes found here!
             </h3>
-            <p className="text-neutral-600 text-sm font-medium mb-6">
+            <p className="text-neutral-600 text-xs sm:text-sm font-medium mb-6">
               Even our best stand-up comedian couldn’t find a match for that. Try
               loosening your search or pick another category.
             </p>
@@ -211,6 +211,7 @@ export const JokesClient: React.FC = () => {
                 setSelectedCategory('All');
                 setSearchQuery('');
               }}
+              className="w-full sm:w-auto"
             >
               Show All Jokes
             </Button>
