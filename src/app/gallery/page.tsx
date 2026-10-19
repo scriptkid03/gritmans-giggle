@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { GalleryClient } from '@/app/gallery/GalleryClient';
+import { getGalleryItems } from '@/lib/db-gallery';
 
 export const metadata: Metadata = {
   title: 'The Laugh Gallery | Gritmans Giggle & Chuckle Joint',
@@ -8,18 +9,20 @@ export const metadata: Metadata = {
     'Visual comedy, viral African memes, relatable skits, and comic clips at funnygritmanlaughters.com.',
 };
 
-export default function GalleryPage() {
+export default async function GalleryPage() {
+  const initialItems = await getGalleryItems();
+
   return (
     <Suspense
       fallback={
         <div className="w-full min-h-[60vh] flex items-center justify-center">
           <div className="text-center font-black uppercase text-xl animate-pulse">
-            Loading Laugh Gallery... 🖼️
+            Loading Laugh Gallery from MongoDB... 🖼️
           </div>
         </div>
       }
     >
-      <GalleryClient />
+      <GalleryClient initialItems={initialItems} />
     </Suspense>
   );
 }

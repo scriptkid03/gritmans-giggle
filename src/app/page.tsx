@@ -10,15 +10,22 @@ import { Button } from '@/components/Button';
 import { Badge } from '@/components/Badge';
 import {
   LAUGH_CATEGORIES,
-  MOCK_JOKES,
-  MOCK_GALLERY_ITEMS,
-  MOCK_COMMENTS,
 } from '@/lib/mock-data';
+import { getJokes, getFeaturedJoke } from '@/lib/db-jokes';
+import { getComments } from '@/lib/db-comments';
+import { getGalleryItems } from '@/lib/db-gallery';
 import { ArrowRight, MessageSquarePlus, Sparkles } from 'lucide-react';
 
-export default function HomePage() {
-  const previewGallery = MOCK_GALLERY_ITEMS.slice(0, 3);
-  const previewComments = MOCK_COMMENTS.slice(0, 3);
+export default async function HomePage() {
+  const [featuredJoke, allJokes, galleryItems, comments] = await Promise.all([
+    getFeaturedJoke(),
+    getJokes(),
+    getGalleryItems(),
+    getComments(),
+  ]);
+
+  const previewGallery = galleryItems.slice(0, 3);
+  const previewComments = comments.slice(0, 3);
 
   return (
     <div className="flex flex-col w-full">
@@ -41,7 +48,7 @@ export default function HomePage() {
             centered={true}
           />
 
-          <FeaturedJoke initialJoke={MOCK_JOKES[0]} />
+          <FeaturedJoke initialJoke={featuredJoke} allJokes={allJokes} />
         </div>
       </section>
 

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Joke } from '@/lib/types';
+import { Joke, ReactionType, ReactionCounts } from '@/lib/types';
 import { Badge } from './Badge';
 import { ReactionButtons } from './ReactionButtons';
 import { Copy, Check, Sparkles, Eye, EyeOff } from 'lucide-react';
@@ -10,6 +10,7 @@ interface JokeCardProps {
   joke: Joke;
   initiallyRevealed?: boolean;
   className?: string;
+  onReact?: (type: ReactionType, newCounts: ReactionCounts) => void;
 }
 
 type BadgeColor = 'yellow' | 'orange' | 'pink' | 'purple' | 'blue' | 'green' | 'white';
@@ -18,6 +19,7 @@ export const JokeCard: React.FC<JokeCardProps> = ({
   joke,
   initiallyRevealed = false,
   className = '',
+  onReact,
 }) => {
   const [isRevealed, setIsRevealed] = useState(initiallyRevealed);
   const [copied, setCopied] = useState(false);
@@ -131,7 +133,7 @@ export const JokeCard: React.FC<JokeCardProps> = ({
 
       {/* Footer: Reactions */}
       <div className="pt-3 border-t-2 border-neutral-100 flex items-center justify-between flex-wrap gap-2">
-        <ReactionButtons initialReactions={joke.reactions} size="sm" />
+        <ReactionButtons initialReactions={joke.reactions} onReact={onReact} size="sm" />
       </div>
     </article>
   );

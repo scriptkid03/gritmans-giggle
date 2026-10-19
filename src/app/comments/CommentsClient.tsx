@@ -9,17 +9,17 @@ import { Badge } from '@/components/Badge';
 
 type FilterType = 'all' | ReactionType;
 
-export const CommentsClient: React.FC = () => {
-  // Local state for comments (Ready for Supabase integration)
-  // SUPABASE INTEGRATION POINT:
-  // In the next phase, replace this client state with:
-  // const { data: comments, error } = await supabase.from('comments').select('*').order('created_at', { ascending: false });
-  const [comments, setComments] = useState<Comment[]>(MOCK_COMMENTS);
+interface CommentsClientProps {
+  initialComments?: Comment[];
+}
+
+export const CommentsClient: React.FC<CommentsClientProps> = ({ initialComments }) => {
+  const [comments, setComments] = useState<Comment[]>(
+    initialComments && initialComments.length > 0 ? initialComments : MOCK_COMMENTS
+  );
   const [reactionFilter, setReactionFilter] = useState<FilterType>('all');
 
   const handleNewComment = (newComment: Comment) => {
-    // SUPABASE INTEGRATION POINT:
-    // await supabase.from('comments').insert([{ stage_name: newComment.stageName, ... }]);
     setComments((prev) => [newComment, ...prev]);
 
     // Scroll to the comment feed

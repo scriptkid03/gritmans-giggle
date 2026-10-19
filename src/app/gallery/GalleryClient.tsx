@@ -8,7 +8,13 @@ import { Badge } from '@/components/Badge';
 import { Button } from '@/components/Button';
 import { Sparkles, Film, Image as ImageIcon, Volume2, Smile, ArrowRight } from 'lucide-react';
 
-export const GalleryClient: React.FC = () => {
+import { GalleryItem } from '@/lib/types';
+
+interface GalleryClientProps {
+  initialItems?: GalleryItem[];
+}
+
+export const GalleryClient: React.FC<GalleryClientProps> = ({ initialItems }) => {
   const searchParams = useSearchParams();
   const filterParam = searchParams.get('filter');
 
@@ -19,11 +25,12 @@ export const GalleryClient: React.FC = () => {
   }, [filterParam]);
 
   const [activeType, setActiveType] = useState<string>(initialFilter);
+  const items = initialItems && initialItems.length > 0 ? initialItems : MOCK_GALLERY_ITEMS;
 
   const filteredItems = useMemo(() => {
-    if (activeType === 'all') return MOCK_GALLERY_ITEMS;
-    return MOCK_GALLERY_ITEMS.filter((item) => item.type === activeType);
-  }, [activeType]);
+    if (activeType === 'all') return items;
+    return items.filter((item) => item.type === activeType);
+  }, [items, activeType]);
 
   const filterTabs = [
     { id: 'all', label: 'All Content', icon: Sparkles },

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Joke } from '@/lib/types';
+import { Joke, ReactionType } from '@/lib/types';
 import { MOCK_JOKES } from '@/lib/mock-data';
 import { Badge } from './Badge';
 import { ReactionButtons } from './ReactionButtons';
@@ -9,11 +9,14 @@ import { RefreshCw, Sparkles, Share2, Check } from 'lucide-react';
 
 interface FeaturedJokeProps {
   initialJoke?: Joke;
+  allJokes?: Joke[];
 }
 
 export const FeaturedJoke: React.FC<FeaturedJokeProps> = ({
   initialJoke = MOCK_JOKES[0],
+  allJokes,
 }) => {
+  const jokePool = allJokes && allJokes.length > 0 ? allJokes : MOCK_JOKES;
   const [currentJoke, setCurrentJoke] = useState<Joke>(initialJoke);
   const [isAnimating, setIsAnimating] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -21,12 +24,24 @@ export const FeaturedJoke: React.FC<FeaturedJokeProps> = ({
   const handleNextJoke = () => {
     setIsAnimating(true);
     setTimeout(() => {
-      // Pick a different joke at random
-      const available = MOCK_JOKES.filter((j) => j.id !== currentJoke.id);
-      const randomIndex = Math.floor(Math.random() * available.length);
-      setCurrentJoke(available[randomIndex] || MOCK_JOKES[0]);
+      // Pick a different joke at random from pool
+      const available = jokePool.filter((j) => j.id !== currentJoke.id);
+      const randomIndex = Math.floor(Math.random() * (available.length || 1));
+      setCurrentJoke(available[randomIndex] || jokePool[0]);
       setIsAnimating(false);
     }, 200);
+  };
+
+  const handleReaction = async (reactionType: ReactionType) => {
+    try {
+      await fetch(`/api/jokes/${currentJoke.id}/react`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reactionType }),
+      });
+    } catch (err) {
+      console.warn('Failed to sync reaction to MongoDB:', err);
+    }
   };
 
   const handleShare = () => {
@@ -127,6 +142,7 @@ export const FeaturedJoke: React.FC<FeaturedJokeProps> = ({
             <ReactionButtons
               key={currentJoke.id}
               initialReactions={currentJoke.reactions}
+              onReact={handleReaction}
               size="md"
             />
           </div>

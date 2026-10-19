@@ -1,0 +1,54 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+type ReactionCounts {
+  smirk    Int @default(0)
+  chuckle  Int @default(0)
+  laugh    Int @default(0)
+  finished Int @default(0)
+}
+
+model Joke {
+  id        String         @id @default(auto()) @map("_id") @db.ObjectId
+  setup     String
+  punchline String
+  category  String
+  author    String?
+  tags      String[]
+  featured  Boolean        @default(false)
+  reactions ReactionCounts
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+}
+
+model Comment {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  stageName   String
+  avatarColor String
+  comment     String
+  reaction    String
+  likes       Int      @default(0)
+  createdAt   DateTime @default(now())
+}
+
+model GalleryItem {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  title          String
+  type           String
+  category       String
+  description    String
+  reactions      Int      @default(0)
+  accentColor    String
+  badge          String?
+  duration       String?
+  memeTextTop    String?
+  memeTextBottom String?
+  visualDetail   String?
+  createdAt      DateTime @default(now())
+}

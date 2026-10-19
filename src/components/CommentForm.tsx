@@ -50,7 +50,7 @@ export const CommentForm: React.FC<CommentFormProps> = ({
     return Object.keys(errs).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
 
@@ -59,21 +59,34 @@ export const CommentForm: React.FC<CommentFormProps> = ({
     // Pick random avatar color
     const randomColor = avatarColors[Math.floor(Math.random() * avatarColors.length)];
 
-    const newComment: Comment = {
-      id: `c-local-${Date.now()}`,
-      stageName: stageName.trim(),
-      avatarColor: randomColor,
-      comment: commentText.trim(),
-      reaction: selectedReaction,
-      createdAt: 'Just now',
-      likes: 1,
-      isNew: true,
-    };
+    try {
+      const res = await fetch('/api/comments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          stageName: stageName.trim(),
+          avatarColor: randomColor,
+          comment: commentText.trim(),
+          reaction: selectedReaction,
+        }),
+      });
 
-    // Simulate short network pulse for realistic feel
-    setTimeout(() => {
-      onCommentSubmitted(newComment);
-      setIsSubmitting(false);
+      const data = await res.json();
+      const savedComment: Comment =
+        data.success && data.comment
+          ? { ...data.comment, isNew: true }
+          : {
+              id: `c-local-${Date.now()}`,
+              stageName: stageName.trim(),
+              avatarColor: randomColor,
+              comment: commentText.trim(),
+              reaction: selectedReaction,
+              createdAt: 'Just now',
+              likes: 1,
+              isNew: true,
+            };
+
+      onCommentSubmitted(savedComment);
       setIsSuccess(true);
       setCommentText('');
       setStageName('');
@@ -83,7 +96,22 @@ export const CommentForm: React.FC<CommentFormProps> = ({
       setTimeout(() => {
         setIsSuccess(false);
       }, 5000);
-    }, 400);
+    } catch (err) {
+      console.warn('Failed to save comment to MongoDB:', err);
+      onCommentSubmitted({
+        id: `c-local-${Date.now()}`,
+        stageName: stageName.trim(),
+        avatarColor: randomColor,
+        comment: commentText.trim(),
+        reaction: selectedReaction,
+        createdAt: 'Just now',
+        likes: 1,
+        isNew: true,
+      });
+      setIsSuccess(true);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const reactions: ReactionType[] = ['smirk', 'chuckle', 'laugh', 'finished'];

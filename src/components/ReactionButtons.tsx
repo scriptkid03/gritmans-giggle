@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ReactionCounts, ReactionType } from '@/lib/types';
 import { REACTION_CONFIG } from '@/lib/mock-data';
 
@@ -20,27 +20,33 @@ export const ReactionButtons: React.FC<ReactionButtonsProps> = ({
   const [reactions, setReactions] = useState<ReactionCounts>(initialReactions);
   const [userReaction, setUserReaction] = useState<ReactionType | null>(null);
 
+  useEffect(() => {
+    setReactions(initialReactions);
+  }, [initialReactions]);
+
   const handleReaction = (type: ReactionType) => {
-    setReactions((prev) => {
-      const next = { ...prev };
-      if (userReaction === type) {
-        // Toggle off
-        next[type] = Math.max(0, next[type] - 1);
-        setUserReaction(null);
-      } else {
-        // Remove previous if any
-        if (userReaction) {
-          next[userReaction] = Math.max(0, next[userReaction] - 1);
-        }
-        // Add new
-        next[type] = next[type] + 1;
-        setUserReaction(type);
+    const isSelected = userReaction === type;
+    const newReaction = isSelected ? null : type;
+
+    const nextCounts: ReactionCounts = { ...reactions };
+    if (isSelected) {
+      // Toggle off
+      nextCounts[type] = Math.max(0, (nextCounts[type] || 0) - 1);
+    } else {
+      // Remove previous reaction if any
+      if (userReaction) {
+        nextCounts[userReaction] = Math.max(0, (nextCounts[userReaction] || 0) - 1);
       }
-      if (onReact) {
-        onReact(type, next);
-      }
-      return next;
-    });
+      // Add new reaction
+      nextCounts[type] = (nextCounts[type] || 0) + 1;
+    }
+
+    setUserReaction(newReaction);
+    setReactions(nextCounts);
+
+    if (onReact) {
+      onReact(type, nextCounts);
+    }
   };
 
   const reactionKeys: ReactionType[] = ['smirk', 'chuckle', 'laugh', 'finished'];
